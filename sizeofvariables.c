@@ -13,5 +13,11 @@ int main()
   unsigned int c = 545;
   printf("unsigned int c value: %u and size: %lu bytes\n", c, sizeof(c));
 
+  char d = 'a';
+  printf("char d value: %c and size: %lu bytes\n", d, sizeof(d));
+
+  double e = 54.5;
+  printf("double e value: %f and size: %lu bytes\n", e, sizeof(e));
+
 }
 
