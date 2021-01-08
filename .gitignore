@@ -1,3 +1,7 @@
 # Compiled Output Files #
 #######
 *.out
+
+# My random scratch file that I don't want to track #
+#######
+working.c
