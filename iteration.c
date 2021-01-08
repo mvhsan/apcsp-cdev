@@ -17,6 +17,7 @@ int main(int argc, char* argv[])
   // for testing only - do not change
   getTestInput(argc, argv, &div);
 
+  printf("Testing for numbers divisible by %d\n", div);
 
   // add code below to complete 2.4 for any value of div 
   for (int i = 0; i < 100; i++) {
