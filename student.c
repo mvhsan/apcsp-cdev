@@ -1,5 +1,6 @@
 #include <stdio.h>
 #include <string.h>
+#include <stdlib.h>
 
 // student structure
 struct Student {
@@ -29,7 +30,9 @@ int main()
 {
 
   // an array of students
-  struct Student students[100];
+  struct Student *students;
+  students=(struct Student *)malloc(0);
+
   int numStudents = 0;
   
   while (1)
@@ -73,11 +76,13 @@ int main()
 	else printf("Please enter an integer\n");
       }
 
+      students=(struct Student *)realloc(students, (numStudents+1)*sizeof(struct Student));
       students[numStudents] = newStudent;
 
       numStudents++;
     }
   }
-  
+ 
+  free(students); 
   printf("\nGoodbye!\n\n");
 }
