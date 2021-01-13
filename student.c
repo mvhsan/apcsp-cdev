@@ -31,7 +31,7 @@ int main()
 
   // an array of students
   struct Student *students;
-  students=(struct Student *)malloc(0);
+  students = (struct Student *)malloc(0);
 
   int numStudents = 0;
   
