@@ -1,6 +1,8 @@
 # Compiled Output Files #
 #######
 *.out
+*.o
+hellomake/hellomake
 
 # My random scratch file that I don't want to track #
 #######
