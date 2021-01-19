@@ -2,8 +2,12 @@
 #######
 *.out
 *.o
+*.a
 hellomake/hellomake
+proj/studentproj
+proj/encrypt/test
 
-# My random scratch file that I don't want to track #
+# My random scratch files that I don't want to track #
 #######
 working.c
+proj/backup_studentdata.txt

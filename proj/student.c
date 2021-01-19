@@ -25,12 +25,27 @@ void createStudent(char* fname, char* lname, int age, int id)
   // student to the student array
   //  - the firstName and lastName strings should be dynamically created
   //    based on the size of the fname and lname args
+
+  Student* newStudent = (Student *)malloc(sizeof(fname) + sizeof(lname) + sizeof(unsigned int) + sizeof(long int));
+  newStudent->firstName = malloc(sizeof(fname));
+  strcpy(newStudent->firstName, fname);
+  newStudent->lastName = malloc(sizeof(lname));
+  strcpy(newStudent->lastName, lname);
+  newStudent->age = age;
+  newStudent->id = id;
+
+  students[numStudents] = newStudent;
+  numStudents++;
 }
 
 
 void deleteStudent(Student* student)
 {
   // free the memory associated with a student including the strings
+  
+  free(student->firstName);
+  free(student->lastName);
+  free(student);
 }
 
 
@@ -38,6 +53,12 @@ void deleteStudents()
 {
   // iterate over the students array deleting every student and setting te pointer
   // values to 0 and adjusting the numStudents to 0
+ 
+  for (int i = 0; i < numStudents; i++) {
+    deleteStudent(students[i]);
+    students[i] = 0;
+  }
+  numStudents = 0;
 }
 
 
@@ -49,12 +70,77 @@ void saveStudents(int key)
   //       tom thumb 15 1234 
   //       james dean 21 2345 
   //       katy jones 18 4532 
+
+  FILE* fp = fopen("studentdata.txt", "w");
+  
+  if (fp) {
+    for (int i = 0; i < numStudents; i++) {
+      Student* student = students[i];
+      
+      char fname[strlen(student->firstName)];
+      strcpy(fname, student->firstName);
+      encrypt(fname, &key, 1);
+
+      char lname[strlen(student->lastName)];
+      strcpy(lname, student->lastName);
+      encrypt(lname, &key, 1);
+
+      char ageStr[32];
+      sprintf(ageStr, "%u", student->age);
+      encrypt(ageStr, &key, 1);
+
+      char idStr[32];
+      sprintf(idStr, "%li", student->id);
+      encrypt(idStr, &key, 1);
+
+      fprintf(fp, "%s %s %s %s\n", fname, lname, ageStr, idStr);
+    }
+    fclose(fp);
+  }
 }
 
 
 void loadStudents(int key)
 {
   // load the students from the data file overwriting all exisiting students in memory
+
+  FILE* fp = fopen("studentdata.txt", "r");
+
+  if (fp) {
+    
+    deleteStudents();
+
+    while(1) {
+      char fname[256]; char lname[256]; char ageStr[256]; char idStr[256];
+      if (fscanf(fp, "%s %s %s %s\n", fname, lname, ageStr, idStr) == 4) {
+        
+	char firstName[strlen(fname)];
+	strcpy(firstName, fname);
+	decrypt(firstName, &key, 1);
+
+	char lastName[strlen(lname)];
+	strcpy(lastName, lname);
+	decrypt(lastName, &key, 1);
+
+	//printf("Initial age string: %s\n", ageStr);
+	decrypt(ageStr, &key, 1);
+	//printf("Age string: %s\n", ageStr);
+	unsigned int age;
+	sscanf(ageStr, "%u", &age);
+	//printf("Age int: %u\n", age);
+
+	decrypt(idStr, &key, 1);
+	long int id;
+	sscanf(idStr, "%li", &id);
+
+        createStudent(firstName, lastName, age, id);
+	printf("Student created: %s %s %u %li\n", firstName, lastName, age, id);
+      } else
+        break;
+    }
+
+    fclose(fp);
+  }
 }
 
 
