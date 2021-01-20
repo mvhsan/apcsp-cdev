@@ -76,7 +76,7 @@ int main()
       printf("\nEnter a Vigenere encrypt/decrypt keyword: ");
       fgets(inputBuff, BUFFSIZE, stdin);
       char x[256];
-      if (sscanf(inputBuff, "%s", x) == 1) {
+      if (sscanf(inputBuff, "%[^\n]", x) == 1) {
 	key = (int *)realloc(key, sizeof(int) * strlen(x));
         for (int i = 0; i < strlen(x); i++) {
           key[i] = (int) x[i];
