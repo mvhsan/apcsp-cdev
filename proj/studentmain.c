@@ -1,5 +1,6 @@
 #include <stdio.h>
 #include <string.h>
+#include <stdlib.h>
 
 #include "student.h"
 
@@ -28,12 +29,14 @@ int main()
   char lname[BUFFSIZE];
 
   // key to encrypt/decrypt
-  int key = 0;
+  int* key = (int *)malloc(sizeof(int));
+  key[0] = 0;
+  int size = 1;
 
   while (1)
   {
     char c;
-    printf("\nEnter a to add, p to print, l to load, s to save, e encrypt, q to quit: ");
+    printf("\nEnter a to add, p to print, l to load, s to save, e to Caesar encrypt, v to Vigenere encrypt, q to quit: ");
     fgets(inputBuff, BUFFSIZE, stdin);
     if (sscanf(inputBuff, "%c", &c) != 1) continue;
     if (c == 'q') 
@@ -47,23 +50,39 @@ int main()
     }
     else if (c == 'l')
     {
-      loadStudents(key);
+      loadStudents(key, size);
       continue;
     }
     else if (c == 's')
     {
-      saveStudents(key);
+      saveStudents(key, size);
       continue;
     }
     else if (c == 'e')
     {
-      printf("\nEnter an encrypt/decrypt key: ");
+      printf("\nEnter a Caesar encrypt/decrypt key: ");
       fgets(inputBuff, BUFFSIZE, stdin);
       int x;
-      if (sscanf(inputBuff, "%d", &x) == 1) 
-        key = x;
+      if (sscanf(inputBuff, "%d", &x) == 1) {
+        key = (int *)realloc(key, sizeof(int));
+        key[0] = x;
+	size = 1;
+      }
       else
         printf("enter a positive shift key\n");
+    }
+    else if (c == 'v')
+    {
+      printf("\nEnter a Vigenere encrypt/decrypt keyword: ");
+      fgets(inputBuff, BUFFSIZE, stdin);
+      char x[256];
+      if (sscanf(inputBuff, "%s", x) == 1) {
+	key = (int *)realloc(key, sizeof(int) * strlen(x));
+        for (int i = 0; i < strlen(x); i++) {
+          key[i] = (int) x[i];
+	}
+	size = strlen(x);
+      }
     }
     else if (c == 'a')
     {
