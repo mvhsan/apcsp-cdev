@@ -26,9 +26,9 @@ int main()
   int shifts[] = {3,4,5};
 
   // test encrypt
-  strcpy(inpStr, "hello hello");
-  testEncrypt(1, inpStr, shifts, 1, "khoor#khoor");
-  testEncrypt(0, inpStr, shifts, 1, "hello hello");
+  strcpy(inpStr, "hello");
+  testEncrypt(1, inpStr, shifts, 1, "khoor");
+  testEncrypt(0, inpStr, shifts, 1, "hello");
   
   strcpy(inpStr, "z9Z");
   testEncrypt(1, inpStr, shifts, 1, "Cc2");
